@@ -364,7 +364,7 @@ def load_file(filename, mmap_mode=None, verbose=True, allow_pickle=False):
             data = json.load(fopen)
     elif file_ext == ".yaml":
         with g_pathmgr.open(filename, "r") as fopen:
-            data = yaml.load(fopen, Loader=yaml.FullLoader)
+            data = yaml.load(fopen, Loader=yaml.SafeLoader)
     elif file_ext == ".csv":
         with g_pathmgr.open(filename, "r") as fopen:
             data = pd.read_csv(fopen)
