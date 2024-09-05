@@ -16,6 +16,7 @@ import requests
 import tqdm
 from lavis.common.utils import cleanup_dir, get_abs_path, get_cache_path
 from omegaconf import OmegaConf
+from security import safe_requests
 
 header_mzl = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
@@ -44,7 +45,7 @@ def download_file(url, filename):
 
     while cur_retries < max_retries:
         try:
-            r = requests.get(url, headers=header, timeout=10)
+            r = safe_requests.get(url, headers=header, timeout=10)
             with open(filename, "wb") as f:
                 f.write(r.content)
 
