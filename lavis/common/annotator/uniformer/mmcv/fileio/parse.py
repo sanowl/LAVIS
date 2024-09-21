@@ -43,7 +43,7 @@ def list_from_file(filename,
     file_client = FileClient.infer_client(file_client_args, filename)
     with StringIO(file_client.get_text(filename, encoding)) as f:
         for _ in range(offset):
-            f.readline()
+            f.readline(5_000_000)
         for line in f:
             if 0 < max_num <= cnt:
                 break
