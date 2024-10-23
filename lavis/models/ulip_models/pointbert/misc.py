@@ -1,12 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-import random
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import os
 from collections import abc
+import secrets
+
 # from pointnet2_ops import pointnet2_utils
 
 
@@ -96,7 +97,7 @@ def set_random_seed(seed, deterministic=False):
         cudnn.benchmark = True
 
     """
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -182,7 +183,7 @@ def seprate_point_cloud(xyz, num_points, crop, fixed_points = None, padding_zero
     CROP = []
     for points in xyz:
         if isinstance(crop,list):
-            num_crop = random.randint(crop[0],crop[1])
+            num_crop = secrets.SystemRandom().randint(crop[0],crop[1])
         else:
             num_crop = crop
 
@@ -192,7 +193,7 @@ def seprate_point_cloud(xyz, num_points, crop, fixed_points = None, padding_zero
             center = F.normalize(torch.randn(1,1,3),p=2,dim=-1).cuda()
         else:
             if isinstance(fixed_points,list):
-                fixed_point = random.sample(fixed_points,1)[0]
+                fixed_point = secrets.SystemRandom().sample(fixed_points,1)[0]
             else:
                 fixed_point = fixed_points
             center = fixed_point.reshape(1,1,3).cuda()

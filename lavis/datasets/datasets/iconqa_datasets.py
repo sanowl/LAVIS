@@ -10,11 +10,11 @@ import json
 import os
 import torch
 import pathlib
-import random
 
 from PIL import Image
 
 from lavis.datasets.datasets.vqa_datasets import VQADataset, VQAEvalDataset
+import secrets
 
 
 class __DisplMixin:
@@ -67,7 +67,7 @@ class IconQAInstructDataset(IconQADataset):
     def __getitem__(self, index):
         data = super().__getitem__(index)
         if data != None:
-            data['text_output'] = random.choice(data["direct_answers"])
+            data['text_output'] = secrets.choice(data["direct_answers"])
         return data
         
     def collater(self, samples):

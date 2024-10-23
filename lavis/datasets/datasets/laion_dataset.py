@@ -7,7 +7,7 @@
 
 import webdataset as wds
 from lavis.datasets.datasets.base_dataset import BaseDataset
-import random
+import secrets
 
 class LaionDataset(BaseDataset):
     def __init__(self, vis_processor, text_processor, location):
@@ -25,7 +25,7 @@ class LaionDataset(BaseDataset):
 
     def to_dict(self, sample):
         if type(sample[1]) == list:
-            caption = random.choice(sample[1][:2])
+            caption = secrets.choice(sample[1][:2])
         else:
             caption = sample[1]["caption"]
 

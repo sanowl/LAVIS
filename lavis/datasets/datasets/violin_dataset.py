@@ -6,7 +6,6 @@
 """
 
 import os
-import random
 from lavis.datasets.datasets.base_dataset import BaseDataset
 
 from lavis.datasets.datasets.multimodal_classification_datasets import (
@@ -14,6 +13,7 @@ from lavis.datasets.datasets.multimodal_classification_datasets import (
 )
 
 from lavis.datasets.datasets.caption_datasets import CaptionDataset
+import secrets
 
 class __DisplMixin:
     def displ_item(self, index):
@@ -66,7 +66,7 @@ class ViolinVideoEntailmentInstructDataset(ViolinVideoEntailmentDataset):
         templates = ["is it true that {}?", "is the satement {} contained in the video?", "is the statement {} entailed in the video?"]
         if data != None:
             data['text_output'] = "yes" if data['label'] == 'correct' else 'no'
-            data['text_input'] = random.choice(templates).format(data["sentence"])
+            data['text_input'] = secrets.choice(templates).format(data["sentence"])
         return data
 
 

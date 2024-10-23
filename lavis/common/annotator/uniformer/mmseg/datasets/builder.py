@@ -1,6 +1,5 @@
 import copy
 import platform
-import random
 from functools import partial
 
 import numpy as np
@@ -9,6 +8,7 @@ from annotator.uniformer.mmcv.runner import get_dist_info
 from annotator.uniformer.mmcv.utils import Registry, build_from_cfg
 from annotator.uniformer.mmcv.utils.parrots_wrapper import DataLoader, PoolDataLoader
 from torch.utils.data import DistributedSampler
+import secrets
 
 if platform.system() != 'Windows':
     # https://github.com/pytorch/pytorch/issues/973
@@ -166,4 +166,4 @@ def worker_init_fn(worker_id, num_workers, rank, seed):
 
     worker_seed = num_workers * rank + worker_id + seed
     np.random.seed(worker_seed)
-    random.seed(worker_seed)
+    secrets.SystemRandom().seed(worker_seed)
