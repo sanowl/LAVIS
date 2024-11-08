@@ -17,6 +17,7 @@ import pickle
 import os
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+import fickling
 
 
 parser = argparse.ArgumentParser(description="")
@@ -107,7 +108,7 @@ if mode == 'get_pairs' or mode == "all":
 
 if mode == "instruction_gen" or mode == "all":
     import pickle
-    pairs = pickle.load(open(os.path.join(output_dir, f'audiocaps_pairs_disc_dataset_shard_{shard}_{rnd}_{split}.p', 'rb')))
+    pairs = fickling.load(open(os.path.join(output_dir, f'audiocaps_pairs_disc_dataset_shard_{shard}_{rnd}_{split}.p', 'rb')))
     
     df = pd.concat([pd.read_csv(os.path.join(output_dir, f'audiocaps_property_shard_{s}_{rnd}_{split}.csv')) for s in [0,1,2,3]])
     examples = []
@@ -142,7 +143,7 @@ if mode == "instruction_gen" or mode == "all":
 
 if mode == "rtc" or mode == "all":
     import pickle
-    examples = pickle.load(open(os.path.join(output_dir, f"/disc_examples_{shard}_{rnd}_{split}.p", 'rb')))
+    examples = fickling.load(open(os.path.join(output_dir, f"/disc_examples_{shard}_{rnd}_{split}.p", 'rb')))
     prompt = "Given entity A with caption '{}' and properties {} and entity B with caption '{}' and properties {}. Answer the question: {}. Answer:" 
     rtc_examples = []
     bs = 16
