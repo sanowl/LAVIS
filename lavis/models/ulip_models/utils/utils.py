@@ -17,9 +17,9 @@ def merge_new_config(config, new_config):
             if key == '_base_':
                 with open(new_config['_base_'], 'r') as f:
                     try:
-                        val = yaml.load(f, Loader=yaml.FullLoader)
+                        val = yaml.load(f, Loader=yaml.SafeLoader)
                     except:
-                        val = yaml.load(f)
+                        val = yaml.load(f, Loader=yaml.SafeLoader)
                 config[key] = EasyDict()
                 merge_new_config(config[key], val)
             else:
@@ -33,7 +33,7 @@ def cfg_from_yaml_file(cfg_file):
     config = EasyDict()
     with open(cfg_file, 'r') as f:
         # try:
-        new_config = yaml.load(f, Loader=yaml.FullLoader)
+        new_config = yaml.load(f, Loader=yaml.SafeLoader)
         # except:
         #     new_config = yaml.load(f)
     merge_new_config(config=config, new_config=new_config)
