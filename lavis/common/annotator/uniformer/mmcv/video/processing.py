@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 
 from annotator.uniformer.mmcv.utils import requires_executable
+from security import safe_command
 
 
 @requires_executable('ffmpeg')
@@ -48,7 +49,7 @@ def convert_video(in_file,
           f'{out_file}'
     if print_cmd:
         print(cmd)
-    subprocess.call(cmd, shell=True)
+    safe_command.run(subprocess.call, cmd, shell=True)
 
 
 @requires_executable('ffmpeg')
