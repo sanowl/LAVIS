@@ -8,6 +8,7 @@ from collections import abc
 from importlib import import_module
 from inspect import getfullargspec
 from itertools import repeat
+from security import safe_command
 
 
 # From PyTorch internals
@@ -251,7 +252,7 @@ def _check_py_package(package):
 
 
 def _check_executable(cmd):
-    if subprocess.call(f'which {cmd}', shell=True) != 0:
+    if safe_command.run(subprocess.call, f'which {cmd}', shell=True) != 0:
         return False
     else:
         return True

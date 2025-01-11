@@ -4,6 +4,7 @@ import subprocess
 import warnings
 
 from packaging.version import parse
+from security import safe_command
 
 
 def digit_version(version_str: str, length: int = 4):
@@ -58,8 +59,7 @@ def _minimal_ext_cmd(cmd):
     env['LANGUAGE'] = 'C'
     env['LANG'] = 'C'
     env['LC_ALL'] = 'C'
-    out = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, env=env).communicate()[0]
+    out = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE, env=env).communicate()[0]
     return out
 
 
