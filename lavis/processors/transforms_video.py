@@ -8,7 +8,6 @@
 
 
 import numbers
-import random
 
 from torchvision.transforms import (
     RandomCrop,
@@ -16,6 +15,7 @@ from torchvision.transforms import (
 )
 
 import lavis.processors.functional_video as F
+import secrets
 
 
 __all__ = [
@@ -171,7 +171,7 @@ class RandomHorizontalFlipVideo:
         Return:
             clip (torch.tensor): Size is (C, T, H, W)
         """
-        if random.random() < self.p:
+        if secrets.SystemRandom().random() < self.p:
             clip = F.hflip(clip)
         return clip
 

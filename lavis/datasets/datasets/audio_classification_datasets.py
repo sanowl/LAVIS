@@ -10,7 +10,6 @@ from collections import OrderedDict
 import torch
 import copy
 import pathlib
-import random
 import json
 import pandas as pd
 import torchaudio
@@ -18,6 +17,7 @@ import torch
 from tqdm import tqdm
 
 from lavis.datasets.datasets.base_dataset import BaseDataset
+import secrets
 
 class __DisplMixin:
     def displ_item(self, index):
@@ -89,7 +89,7 @@ class ESC50(BaseDataset, __DisplMixin):
         for modality in self.modalities:
             ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann)
             if isinstance(ann[f"{modality}_path"], list):
-                ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
             else:
                 ann[modality if 'image' not in modality else 'image'] = getattr(self, f"{'vis' if 'image' in modality else modality}_processor")(ann[f"{modality}_path"])
 

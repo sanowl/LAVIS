@@ -1,6 +1,5 @@
 import numpy as np
 import os
-import random
 import shutil
 import torch
 import torch.distributed as dist
@@ -9,6 +8,8 @@ import torch.autograd as autograd
 from PIL import ImageFilter
 from easydict import EasyDict
 import yaml
+import secrets
+
 # from data.dataset_3d import Dataset_3D
 
 def merge_new_config(config, new_config):
@@ -233,7 +234,7 @@ class GaussianBlur(object):
         self.sigma = sigma
 
     def __call__(self, x):
-        sigma = random.uniform(self.sigma[0], self.sigma[1])
+        sigma = secrets.SystemRandom().uniform(self.sigma[0], self.sigma[1])
         x = x.filter(ImageFilter.GaussianBlur(radius=sigma))
         return x
 

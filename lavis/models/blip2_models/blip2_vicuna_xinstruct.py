@@ -4,6 +4,7 @@
  SPDX-License-Identifier: BSD-3-Clause
  For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 """
+import secrets
 
 """
 Requires Transformer 4.28 and above, implementation may change according the Llama implementation
@@ -26,7 +27,6 @@ from peft import (
 )
 
 import transformers
-import random
 from lavis.common.registry import registry
 from lavis.models.base_model import BaseModel
 from lavis.models.blip2_models.blip2 import Blip2Base, disabled_train, LayerNorm
@@ -520,7 +520,7 @@ class Blip2VicunaXInstruct(Blip2Base):
         if samples == None or samples == {} or not any([modality in samples for modality in self.modalities]):
             return {"loss": torch.tensor(0.0)}
 
-        random.shuffle(self.modalities)
+        secrets.SystemRandom().shuffle(self.modalities)
 
         curr_modalities = [modality for modality in self.modalities if modality in samples]
         excess_modalities = [modality for modality in self.modalities if modality not in curr_modalities]
