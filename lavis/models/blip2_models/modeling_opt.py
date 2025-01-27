@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """ PyTorch OPT model."""
-import random
 from typing import List, Optional, Tuple, Union
 
 import torch
@@ -35,6 +34,7 @@ from transformers.utils import (
     replace_return_docstrings,
 )
 from transformers.models.opt.configuration_opt import OPTConfig
+import secrets
 
 
 logger = logging.get_logger(__name__)
@@ -738,7 +738,7 @@ class OPTDecoder(OPTPreTrainedModel):
             if output_hidden_states:
                 all_hidden_states += (hidden_states,)
 
-            dropout_probability = random.uniform(0, 1)
+            dropout_probability = secrets.SystemRandom().uniform(0, 1)
             if self.training and (dropout_probability < self.layerdrop):
                 continue
 

@@ -6,10 +6,10 @@
 """
 
 import time
-import random
 import torch
 from lavis.datasets.data_utils import move_to_cuda
 from torch.utils.data import DataLoader
+import secrets
 
 
 class MultiIterLoader:
@@ -38,7 +38,7 @@ class MultiIterLoader:
 
     def __next__(self):
         # random sample from each loader by ratio
-        loader_idx = random.choices(range(len(self.loaders)), self.ratios, k=1)[0]
+        loader_idx = secrets.SystemRandom().choices(range(len(self.loaders)), self.ratios, k=1)[0]
         return next(self.loaders[loader_idx])
 
 

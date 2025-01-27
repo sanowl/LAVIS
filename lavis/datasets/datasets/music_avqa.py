@@ -8,11 +8,11 @@
 import torch
 import copy
 import os
-import random
 import json
 import ast
 from PIL import Image
 from lavis.datasets.datasets.base_dataset import BaseDataset
+import secrets
 
 class MusicAVQADataset(BaseDataset):
     def __init__(self, **kwargs):
@@ -48,7 +48,7 @@ class MusicAVQADataset(BaseDataset):
         for modality in self.modalities:
             ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann)
             if type(ann[f"{modality}_path"]) == list:
-                ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
             if 'image' in modality:
                 ann['image'] = self.vis_processor(Image.open(ann[f"images_path"]))
             else:

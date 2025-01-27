@@ -10,7 +10,6 @@ from collections import OrderedDict
 import torch
 import copy
 import pathlib
-import random
 import json
 import pandas as pd
 import torchaudio
@@ -18,6 +17,7 @@ import torch
 from tqdm import tqdm
 
 from lavis.datasets.datasets.base_dataset import BaseDataset
+import secrets
 
 class __DisplMixin:
     def displ_item(self, index):
@@ -125,19 +125,19 @@ class AudioSetDataset(AudioCaptioningDataset):
         objects = [self.mid2label[l] for l in objects]
         ann['label'] = objects
         if self.templates:
-            ann['captions'] = [random.choice(self.templates).format(obj) for obj in objects]
+            ann['captions'] = [secrets.choice(self.templates).format(obj) for obj in objects]
         else:
-            ann['captions'] = [random.choice(objects)]
+            ann['captions'] = [secrets.choice(objects)]
 
         for modality in self.modalities:
             ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann)
             if isinstance(ann[f"{modality}_path"], list):
-                ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
             else:
                 ann[modality if 'image' not in modality else 'image'] = getattr(self, f"{'vis' if 'image' in modality else modality}_processor")(ann[f"{modality}_path"])
         
         if isinstance(ann['captions'], list):
-            ann['text_input'] = self.text_processor(random.choice(ann['captions']))
+            ann['text_input'] = self.text_processor(secrets.choice(ann['captions']))
         else:
             ann['text_input'] = self.text_processor(ann['captions'])
 
@@ -203,11 +203,11 @@ class AudioCapsDataset(AudioCaptioningDataset):
             else:
                 ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann)
                 if isinstance(ann[f"{modality}_path"], list):
-                    ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                    ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
                 ann[modality if 'image' not in modality else 'image'] = getattr(self, f"{'vis' if 'image' in modality else modality}_processor")(ann[f"{modality}_path"])
         
         if isinstance(ann['captions'], list):
-            ann['text_input'] = self.text_processor(random.choice(ann['captions']))
+            ann['text_input'] = self.text_processor(secrets.choice(ann['captions']))
         else:
             ann['text_input'] = self.text_processor(ann['captions'])
 
@@ -263,7 +263,7 @@ class ClothoV2Dataset(BaseDataset, __DisplMixin):
         if ann["audio"].sum() == 0:
             return None
         ann['audio_path'] = os.path.join(self.audio_root,self.split,ann['fname'])
-        ann["text_input"] = self.text_processor(random.choice(ann['captions']))
+        ann["text_input"] = self.text_processor(secrets.choice(ann['captions']))
         return ann
     
 class ClothoV2InstructDataset(ClothoV2Dataset):

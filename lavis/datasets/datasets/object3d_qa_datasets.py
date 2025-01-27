@@ -7,11 +7,11 @@
 
 import os
 import copy
-import random
 from PIL import Image
 import torch
 
 from lavis.datasets.datasets.object3d_captioning_datasets import Object3dCaptionDataset
+import secrets
 
 class ObjaverseQADataset(Object3dCaptionDataset):
     def __init__(self, **kwargs):
@@ -37,21 +37,21 @@ class ObjaverseQADataset(Object3dCaptionDataset):
         for modality in self.modalities:
             ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann['sample_id'])
             if type(ann[f"{modality}_path"]) == list:
-                ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
             if 'image' in modality:
                 ann['image'] = self.vis_processor(Image.open(ann[f"image_path"]))
             else:
                 ann[modality] = getattr(self, f"{modality}_processor")(ann[f"{modality}_path"]).to(torch.float32)
         
-        if self.add_binary and random.randint(0,10) < 3:
-            yes_answer = random.randint(0,10)<5
+        if self.add_binary and secrets.SystemRandom().randint(0,10) < 3:
+            yes_answer = secrets.SystemRandom().randint(0,10)<5
             if not yes_answer:
-                caption_index = random.choice(list(set(range(len(self.annotation))).difference(set([index]))))
+                caption_index = secrets.choice(list(set(range(len(self.annotation))).difference(set([index]))))
                 caption = self.annotation[caption_index]['caption']
             else:
                 caption = ann['caption']
             
-            question = random.choice(self.binary_templates).format(caption)
+            question = secrets.choice(self.binary_templates).format(caption)
             answer = 'yes' if yes_answer else 'no'
             ann['text_input'] = self.text_processor(question)
             ann['text_output'] = answer

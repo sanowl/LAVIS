@@ -14,11 +14,11 @@ import argparse
 import json
 from PIL import Image
 import os
-import random
 import torch
 import torch.backends.cudnn as cudnn
 import numpy as np
 import torchvision
+import secrets
 
 
 def check_positive(value):
@@ -36,7 +36,7 @@ def check_float_range(min_val, max_val):
     return helper
 
 def setup_seeds(seed):
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
 

@@ -4,8 +4,6 @@
  SPDX-License-Identifier: BSD-3-Clause
  For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 """
-
-import random
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
@@ -17,6 +15,7 @@ import pickle
 import os
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+import secrets
 
 
 parser = argparse.ArgumentParser(description="")
@@ -94,7 +93,7 @@ if mode == 'get_pairs' or mode == "all":
             curr_caption = row['caption']
             candidates = indices.difference(set([i] + [p[0] for p in pairs if p[1] == i]+ [p[1] for p in pairs if p[0] == i]))
             if len(candidates)>100:
-                sample_idx = random.sample(candidates, 500)
+                sample_idx = secrets.SystemRandom().sample(candidates, 500)
             else:
                 exit_flag=True
                 break

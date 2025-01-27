@@ -1,4 +1,3 @@
-import random
 import warnings
 
 import numpy as np
@@ -9,6 +8,7 @@ from annotator.uniformer.mmcv.runner import build_optimizer, build_runner
 from annotator.uniformer.mmseg.core import DistEvalHook, EvalHook
 from annotator.uniformer.mmseg.datasets import build_dataloader, build_dataset
 from annotator.uniformer.mmseg.utils import get_root_logger
+import secrets
 
 
 def set_random_seed(seed, deterministic=False):
@@ -21,7 +21,7 @@ def set_random_seed(seed, deterministic=False):
             to True and `torch.backends.cudnn.benchmark` to False.
             Default: False.
     """
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)

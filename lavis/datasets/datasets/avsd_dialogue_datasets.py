@@ -8,12 +8,12 @@
 import torch
 import os
 import copy
-import random
 from PIL import Image
 from lavis.datasets.datasets.dialogue_datasets import (
     DialogueDataset,
     DialogueEvalDataset,
 )
+import secrets
 
 
 class AVSDDialDataset(DialogueDataset):
@@ -206,7 +206,7 @@ class AVSDDialInstructEvalDataset(DialogueDataset):
             ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann['image_id'])
             
             if type(ann[f"{modality}_path"]) == list:
-                ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
             if 'image' in modality:
                 ann['image'] = self.vis_processor(Image.open(ann[f"images_path"]))
             else:

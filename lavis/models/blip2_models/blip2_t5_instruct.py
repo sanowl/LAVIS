@@ -6,7 +6,6 @@
 """
 import logging
 import string
-import random
 import copy
 
 import torch
@@ -18,6 +17,7 @@ from lavis.common.registry import registry
 from lavis.models.blip2_models.blip2 import Blip2Base, disabled_train
 from lavis.models.blip2_models.modeling_t5 import T5Config, T5ForConditionalGeneration
 from transformers.modeling_outputs import BaseModelOutput
+import secrets
 
 
 @registry.register_model("blip2_t5_instruct")
@@ -202,8 +202,7 @@ class Blip2T5Instruct(Blip2Base):
             return {"loss": loss}
 
     def prepare_few_shot_embeds(self, samples):
-        this_n_fs = random.choices(
-            list(range(self.num_few_shot_examples + 1)),
+        this_n_fs = secrets.SystemRandom().choices(list(range(self.num_few_shot_examples + 1)),
             weights=[1 - self.few_shot_prob] + [self.few_shot_prob / self.num_few_shot_examples] * self.num_few_shot_examples
         )[0]
 

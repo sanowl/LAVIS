@@ -8,11 +8,11 @@
 import torch
 import os
 import copy
-import random
 from PIL import Image
 from lavis.datasets.datasets.base_dataset import (
     BaseDataset
 )
+import secrets
 
 
 class YT8MDialDataset(BaseDataset):
@@ -48,7 +48,7 @@ class YT8MDialDataset(BaseDataset):
         for modality in self.modalities:
             ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann)
             if type(ann[f"{modality}_path"]) == list:
-                ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
             if 'video' in modality:
                 try:
                     ann['video'] = getattr(self, f"video_processor")(ann[f"video_path"], start_sec=ann['start_sec'], end_sec=ann['end_sec']).to(torch.float32)

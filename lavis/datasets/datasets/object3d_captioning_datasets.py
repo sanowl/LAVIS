@@ -7,7 +7,6 @@
 
 import os, sys
 from collections import OrderedDict
-import random
 
 from lavis.datasets.datasets.base_dataset import BaseDataset
 from lavis.common.utils import is_serializable
@@ -18,6 +17,7 @@ from tqdm import tqdm
 import json
 import torch
 import copy
+import secrets
 
 class __DisplMixin:
     def displ_item(self, index):
@@ -77,7 +77,7 @@ class Object3dCaptionDataset(BaseDataset, __DisplMixin):
         for modality in self.modalities:
             ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann['sample_id'])
             if type(ann[f"{modality}_path"]) == list: # select from image views
-                ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
             if 'image' in modality:
                 ann['image'] = self.vis_processor(Image.open(ann[f"images_path"]))
             else:
@@ -115,7 +115,7 @@ class ObjaverseCaptionDataset(Object3dCaptionDataset, __DisplMixin):
         
     def __getitem__(self, index):
         ann = super().__getitem__(index)
-        ann['text_input'] = self.text_processor(random.choice(ann['captions']))
+        ann['text_input'] = self.text_processor(secrets.choice(ann['captions']))
         return ann
 
 class ObjaverseCaptionInstructDataset(ObjaverseCaptionDataset):
@@ -154,11 +154,11 @@ class ShapenetCaptionDataset(Object3dCaptionDataset, __DisplMixin):
         if not isinstance(ann['captions'], list):
             if self.templates:
                 ann['objects'] = ann['captions']
-                ann['captions'] = [random.choice(self.templates).format(obj) for obj in ann['objects'].split(',')]
+                ann['captions'] = [secrets.choice(self.templates).format(obj) for obj in ann['objects'].split(',')]
             else:
                 ann['objects'] = ann['captions']
-                ann['captions'] = [random.choice(ann['objects'].split(','))]
-        ann['text_input'] = self.text_processor(random.choice(ann['captions']))
+                ann['captions'] = [secrets.choice(ann['objects'].split(','))]
+        ann['text_input'] = self.text_processor(secrets.choice(ann['captions']))
         return ann
 
 class ShapenetCaptionInstructDataset(ShapenetCaptionDataset):

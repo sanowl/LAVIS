@@ -6,11 +6,11 @@
 """
 
 import os
-import random
 
 from PIL import Image
 
 from lavis.datasets.datasets.vqa_datasets import VQADataset
+import secrets
 
 
 class VGVQADataset(VQADataset):
@@ -42,7 +42,7 @@ class VGVQAInstructDataset(VGVQADataset):
     def __getitem__(self, index):
         data = super().__getitem__(index)
         if data != None:
-            data['text_output'] = random.choice(data["answers"])
+            data['text_output'] = secrets.choice(data["answers"])
         return data
     def collater(self, samples):
         data = super().collater(samples)

@@ -13,9 +13,9 @@ from lavis.processors.randaugment import RandomAugment
 from omegaconf import OmegaConf
 from torchvision import transforms
 from torchvision.transforms.functional import InterpolationMode
-import random
 import nltk
 import pickle
+import secrets
 
 TEMPLATES = {"image":{}, "pc":{}, "audio":{}, "video":{}}
 
@@ -437,7 +437,7 @@ class BlipInstructionProcessor(BaseProcessor):
             prompts = ["This is ", "It is ", "I hear ", "The audio is ", "This is the sound of ", ""]
         else:
             prompts = ["", "This is ", "It is "]
-        caption = random.choice(prompts) +  label
+        caption = secrets.choice(prompts) +  label
         return caption.lower()
     
     def starts_with_vowel_sound(self,word):
@@ -453,12 +453,12 @@ class BlipInstructionProcessor(BaseProcessor):
                 caption = self.pre_caption(caption)
             return caption
         if caption == "" and self.task == 'caption':
-            caption = self.prompt + random.choice(TEMPLATES[self.modality][self.task])
+            caption = self.prompt + secrets.choice(TEMPLATES[self.modality][self.task])
         elif self.task == 'qa':
-            caption = self.prompt + random.choice(TEMPLATES[self.modality][self.task]).format(caption).replace('??', '?')
+            caption = self.prompt + secrets.choice(TEMPLATES[self.modality][self.task]).format(caption).replace('??', '?')
         elif self.task == 'classification':
             if caption == "":
-                caption = self.prompt + random.choice(TEMPLATES[self.modality][self.task])
+                caption = self.prompt + secrets.choice(TEMPLATES[self.modality][self.task])
             else:
                 caption = self.classification_output(caption)
         else:
@@ -480,7 +480,7 @@ class BlipInstructionProcessor(BaseProcessor):
 
     def pre_caption(self, caption):
         if isinstance(caption,list):
-            caption = random.choice(caption)
+            caption = secrets.choice(caption)
         caption = re.sub(
             r"([.!\"()*#:;~])",
             " ",

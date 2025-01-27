@@ -10,8 +10,6 @@
  Initially referred as Img2prompt_vqa, later Img2LLM_vqa.
 """
 
-import random
-
 import spacy
 import torch
 import torch.nn.functional as F
@@ -21,6 +19,7 @@ from lavis.common.dist_utils import download_cached_file
 from lavis.common.registry import registry
 from lavis.models.base_model import BaseModel
 from lavis.models.blip_models.blip_image_text_matching import compute_gradcam
+import secrets
 
 open_pos = ["NOUN", "VERB", "ADJ", "ADV", "NUM"]
 
@@ -414,15 +413,15 @@ class Img2PromptVQA(BaseModel):
                 doc = self.nlp(syn_ans_queid[(qa_idx) % len(syn_ans_queid)][:-1].lower())
                 if doc[-1].pos_ == "NOUN":
                     Task_Prompt += Noun_Questions[
-                        random.randint(0, len(Noun_Questions) - 1)
+                        secrets.SystemRandom().randint(0, len(Noun_Questions) - 1)
                     ]
                 elif doc[-1].pos_ == "VERB":
                     Task_Prompt += Verb_Questions[
-                        random.randint(0, len(Verb_Questions) - 1)
+                        secrets.SystemRandom().randint(0, len(Verb_Questions) - 1)
                     ]
                 elif doc[-1].pos_ == "ADJ":
                     Task_Prompt += Adj_Questions[
-                        random.randint(0, len(Adj_Questions) - 1)
+                        secrets.SystemRandom().randint(0, len(Adj_Questions) - 1)
                     ]
 
                 Task_Prompt += "\n"
