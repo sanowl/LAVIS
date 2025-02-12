@@ -16,6 +16,7 @@ from fuzzywuzzy import fuzz
 import pickle
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+import fickling
 
 parser = argparse.ArgumentParser(description="")
 parser.add_argument("--shard", type=int, help="The shard number to process.")
@@ -137,7 +138,7 @@ if mode == "instruction_gen" or mode == "all":
 
 
 if mode == "rtc" or mode == "all":
-    examples = pickle.load(open(os.path.join(output_dir, f"disc_examples_no_3d_{shard}_{rnd}_{split}.p", 'rb')))
+    examples = fickling.load(open(os.path.join(output_dir, f"disc_examples_no_3d_{shard}_{rnd}_{split}.p", 'rb')))
     prompt = "Given entity A with caption '{}' and properties {} and entity B with caption '{}' and properties. Answer the question: {}. Answer:" 
     rtc_examples = []
     bs = 8

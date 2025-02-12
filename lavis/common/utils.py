@@ -32,6 +32,7 @@ from torchvision.datasets.utils import (
     download_file_from_google_drive,
     extract_archive,
 )
+import fickling
 
 
 def now():
@@ -330,7 +331,7 @@ def load_file(filename, mmap_mode=None, verbose=True, allow_pickle=False):
             data = fopen.readlines()
     elif file_ext in [".pkl", ".pickle"]:
         with g_pathmgr.open(filename, "rb") as fopen:
-            data = pickle.load(fopen, encoding="latin1")
+            data = fickling.load(fopen, encoding="latin1")
     elif file_ext == ".npy":
         if mmap_mode:
             try:
