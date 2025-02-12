@@ -5,12 +5,12 @@
  # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 
 from tqdm import tqdm
-import pickle
 import open3d as o3d
 import numpy as np
 from PIL import Image
+import fickling
 
-data, labels = pickle.load(open('modelnet40_test_1024pts.dat', 'rb'))
+data, labels = fickling.load(open('modelnet40_test_1024pts.dat', 'rb'))
 for i,points in tqdm(enumerate(data)):
 	# Convert the numpy array to Open3D PointCloud
 	pcd = o3d.geometry.PointCloud()
