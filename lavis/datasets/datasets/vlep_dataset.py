@@ -6,11 +6,11 @@
 """
 
 import os
-import random
 from lavis.datasets.datasets.base_dataset import BaseDataset
 import math
 
 from lavis.datasets.datasets.caption_datasets import CaptionDataset
+import secrets
 
 
 class VlepVideoDataset(BaseDataset):
@@ -61,7 +61,7 @@ class VlepVideoInstructDataset(VlepVideoDataset):
             ]
         if data != None:
             data['text_output'] = data["text_input"]
-            data['text_input'] = self.text_processor(random.choice(templates))
+            data['text_input'] = self.text_processor(secrets.choice(templates))
         return data
 
 class VlepVideoEvalDataset(VlepVideoDataset):

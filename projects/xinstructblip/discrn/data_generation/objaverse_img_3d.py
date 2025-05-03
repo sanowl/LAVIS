@@ -5,7 +5,6 @@
 
 
 
-import random
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
@@ -16,6 +15,7 @@ from fuzzywuzzy import fuzz
 import pickle
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+import secrets
 
 parser = argparse.ArgumentParser(description="")
 parser.add_argument("--shard", type=int, help="The shard number to process.")
@@ -89,7 +89,7 @@ if mode == 'get_pairs' or mode == "all":
             curr_caption = row['caption']
             candidates = indices.difference(set([i] + [p[0] for p in pairs if p[1] == i]+ [p[1] for p in pairs if p[0] == i]))
             if len(candidates)>100:
-                sample_idx = random.sample(candidates, 100)
+                sample_idx = secrets.SystemRandom().sample(candidates, 100)
             else:
                 exit_flag=True
                 break

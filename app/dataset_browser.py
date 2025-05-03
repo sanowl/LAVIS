@@ -4,8 +4,6 @@
  # SPDX-License-Identifier: BSD-3-Clause
  # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 """
-
-import random
 from collections import OrderedDict
 from functools import reduce
 from tkinter import N
@@ -15,6 +13,7 @@ from lavis.common.registry import registry
 from lavis.datasets.builders import dataset_zoo, load_dataset
 from lavis.datasets.builders.base_dataset_builder import load_dataset_config
 from PIL import Image
+import secrets
 
 IMAGE_LAYOUT = 3, 4
 VIDEO_LAYOUT = 1, 2
@@ -108,7 +107,7 @@ def show_samples(dataset, offset=0, is_next=False):
 
         indices = list(range(start, end))
     else:
-        indices = random.sample(range(len(dataset)), n_samples)
+        indices = secrets.SystemRandom().sample(range(len(dataset)), n_samples)
     samples = sample_dataset(dataset, indices)
 
     visual_info = (

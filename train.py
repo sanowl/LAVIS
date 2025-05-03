@@ -7,7 +7,6 @@
 
 import argparse
 import os
-import random
 
 import numpy as np
 import torch
@@ -30,6 +29,7 @@ from lavis.models import *
 from lavis.processors import *
 from lavis.runners import *
 from lavis.tasks import *
+import secrets
 
 
 def parse_args():
@@ -54,7 +54,7 @@ def parse_args():
 def setup_seeds(config):
     seed = config.run_cfg.seed + get_rank()
 
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
 
