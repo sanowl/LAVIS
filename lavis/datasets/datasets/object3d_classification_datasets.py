@@ -18,6 +18,7 @@ import pickle
 from PIL import Image
 from lavis.processors.ulip_processors import farthest_point_sample, pc_normalize
 from lavis.datasets.datasets.base_dataset import BaseDataset
+import fickling
 
 
 class __DisplMixin:
@@ -81,11 +82,11 @@ class ModelNetClassificationDataset(BaseDataset, __DisplMixin):
             else:
                 print('Load processed data from %s...' % self.save_path)
                 with open(self.save_path, 'rb') as f:
-                    self.list_of_points, self.list_of_labels = pickle.load(f)
+                    self.list_of_points, self.list_of_labels = fickling.load(f)
         else:
             print('Load processed data from %s...' % self.save_path)
             with open(self.save_path, 'rb') as f:
-                self.list_of_points, self.list_of_labels = pickle.load(f)
+                self.list_of_points, self.list_of_labels = fickling.load(f)
 
     def _process_raw_data(self):
         self.list_of_points = [None] * len(self.datapath)

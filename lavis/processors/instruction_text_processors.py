@@ -15,7 +15,7 @@ from torchvision import transforms
 from torchvision.transforms.functional import InterpolationMode
 import random
 import nltk
-import pickle
+import fickling
 
 TEMPLATES = {"image":{}, "pc":{}, "audio":{}, "video":{}}
 
@@ -418,7 +418,7 @@ class BlipInstructionProcessor(BaseProcessor):
         if task == 'classification':
             ## download cmu_dict and save it as pickle file 
             if cmu_dict_path:
-                self.pronounciations = pickle.load(open(cmu_dict_path, 'rb'))
+                self.pronounciations = fickling.load(open(cmu_dict_path, 'rb'))
             else:
                 # try:
                 #     nltk.download('cmudict')
