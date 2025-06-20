@@ -23,6 +23,7 @@ from multiprocessing import Pool
 from tqdm import tqdm
 from PIL import Image
 from torchvision.transforms import functional as TF
+from security import safe_requests
 
 headers = {
     #'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
@@ -143,7 +144,7 @@ def download_image(row):
 
     try:
         # use smaller timeout to skip errors, but can result in failed downloads
-        response = requests.get(
+        response = safe_requests.get(
             row["url"], stream=False, timeout=5, allow_redirects=True, headers=headers
         )
         row["status"] = response.status_code

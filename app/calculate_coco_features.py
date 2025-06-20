@@ -6,7 +6,6 @@
 """
 
 from PIL import Image
-import requests
 import torch
 
 import os
@@ -15,6 +14,7 @@ from lavis.common.registry import registry
 from lavis.processors import *
 from lavis.models import *
 from lavis.common.utils import build_default_model
+from security import safe_requests
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -23,7 +23,7 @@ def load_demo_image():
     img_url = (
         "https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg"
     )
-    raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
+    raw_image = Image.open(safe_requests.get(img_url, stream=True).raw).convert("RGB")
 
     return raw_image
 

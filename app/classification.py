@@ -6,7 +6,6 @@
 """
 
 import plotly.graph_objects as go
-import requests
 import streamlit as st
 import torch
 from lavis.models import load_model
@@ -17,13 +16,14 @@ from PIL import Image
 from app import device, load_demo_image
 from app.utils import load_blip_itm_model
 from lavis.processors.clip_processors import ClipImageEvalProcessor
+from security import safe_requests
 
 
 @st.cache()
 def load_demo_image(img_url=None):
     if not img_url:
         img_url = "https://img.atlasobscura.com/yDJ86L8Ou6aIjBsxnlAy5f164w1rjTgcHZcx2yUs4mo/rt:fit/w:1200/q:81/sm:1/scp:1/ar:1/aHR0cHM6Ly9hdGxh/cy1kZXYuczMuYW1h/em9uYXdzLmNvbS91/cGxvYWRzL3BsYWNl/X2ltYWdlcy85MDll/MDRjOS00NTJjLTQx/NzQtYTY4MS02NmQw/MzI2YWIzNjk1ZGVk/MGZhMTJiMTM5MmZi/NGFfUmVhcl92aWV3/X29mX3RoZV9NZXJs/aW9uX3N0YXR1ZV9h/dF9NZXJsaW9uX1Bh/cmssX1NpbmdhcG9y/ZSxfd2l0aF9NYXJp/bmFfQmF5X1NhbmRz/X2luX3RoZV9kaXN0/YW5jZV8tXzIwMTQw/MzA3LmpwZw.jpg"
-    raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
+    raw_image = Image.open(safe_requests.get(img_url, stream=True).raw).convert("RGB")
     return raw_image
 
 
