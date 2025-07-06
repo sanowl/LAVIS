@@ -23,7 +23,7 @@ def read_pfm(path):
         scale = None
         endian = None
 
-        header = file.readline().rstrip()
+        header = file.readline(5_000_000).rstrip()
         if header.decode("ascii") == "PF":
             color = True
         elif header.decode("ascii") == "Pf":
@@ -31,13 +31,13 @@ def read_pfm(path):
         else:
             raise Exception("Not a PFM file: " + path)
 
-        dim_match = re.match(r"^(\d+)\s(\d+)\s$", file.readline().decode("ascii"))
+        dim_match = re.match(r"^(\d+)\s(\d+)\s$", file.readline(5_000_000).decode("ascii"))
         if dim_match:
             width, height = list(map(int, dim_match.groups()))
         else:
             raise Exception("Malformed PFM header.")
 
-        scale = float(file.readline().decode("ascii").rstrip())
+        scale = float(file.readline(5_000_000).decode("ascii").rstrip())
         if scale < 0:
             # little-endian
             endian = "<"
