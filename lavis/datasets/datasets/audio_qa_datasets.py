@@ -9,8 +9,8 @@ import os
 from lavis.datasets.datasets.audio_captioning_datasets import AudioCapsDataset
 from lavis.datasets.datasets.base_dataset import BaseDataset
 import torch
-import random
 from collections import Counter
+import secrets
 
 class AudioCapsQADataset(AudioCapsDataset):
     def __init__(self, **kwargs):
@@ -27,20 +27,20 @@ class AudioCapsQADataset(AudioCapsDataset):
             else:
                 ann[f"{modality}_path"] = getattr(self, f"get_{modality}_path")(ann)
                 if isinstance(ann[f"{modality}_path"], list):
-                    ann[f"{modality}_path"] = random.choice(ann[f"{modality}_path"])
+                    ann[f"{modality}_path"] = secrets.choice(ann[f"{modality}_path"])
                 ann[modality if 'image' not in modality else 'image'] = getattr(self, f"{'vis' if 'image' in modality else modality}_processor")(ann[f"{modality}_path"])
         
         if ann["audio"].sum() == 0:
             return None
-        if self.add_binary and random.randint(0,10) < 3:
-            yes_answer = random.randint(0,10)<5
+        if self.add_binary and secrets.SystemRandom().randint(0,10) < 3:
+            yes_answer = secrets.SystemRandom().randint(0,10)<5
             if not yes_answer:
-                caption_index = random.choice(list(set(range(len(self.annotation))).difference(set([index]))))
+                caption_index = secrets.choice(list(set(range(len(self.annotation))).difference(set([index]))))
                 caption = self.annotation[caption_index]['caption']
             else:
                 caption = ann['caption']
             
-            question = random.choice(self.binary_templates).format(caption)
+            question = secrets.choice(self.binary_templates).format(caption)
             answer = 'yes' if yes_answer else 'no'
             return {
                 "text_input": self.text_processor(question),
@@ -105,7 +105,7 @@ class ClothoQADataset(BaseDataset):
             "text_input": self.text_processor(ann['question']),
             "question": self.text_processor(ann['question']),
             "instance_id": ann["instance_id"],
-            "text_output":random.choice(ann['answer']),
+            "text_output":secrets.choice(ann['answer']),
             "answer":ann['answer'],
             "answers":ann['answer'],
             "audio": ann['audio'],

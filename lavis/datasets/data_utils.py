@@ -8,7 +8,6 @@
 import gzip
 import logging
 import os
-import random as rnd
 import tarfile
 import zipfile
 import cv2
@@ -22,6 +21,7 @@ from decord import VideoReader
 from lavis.common.registry import registry
 from lavis.datasets.datasets.base_dataset import ConcatDataset
 from tqdm import tqdm
+import secrets
 
 decord.bridge.set_bridge("torch")
 MAX_INT = registry.get("MAX_INT")
@@ -38,8 +38,8 @@ def load_video(video_path, n_frms=MAX_INT, height=-1, width=-1, sampling="unifor
     if sampling == "uniform":
         indices = np.arange(start, end, vlen / n_frms).astype(int)
     elif sampling == "headtail":
-        indices_h = sorted(rnd.sample(range(vlen // 2), n_frms // 2))
-        indices_t = sorted(rnd.sample(range(vlen // 2, vlen), n_frms // 2))
+        indices_h = sorted(secrets.SystemRandom().sample(range(vlen // 2), n_frms // 2))
+        indices_t = sorted(secrets.SystemRandom().sample(range(vlen // 2, vlen), n_frms // 2))
         indices = indices_h + indices_t
     else:
         raise NotImplementedError
