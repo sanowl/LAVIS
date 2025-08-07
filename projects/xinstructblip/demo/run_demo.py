@@ -16,10 +16,10 @@ from lavis.processors.audio_processors import BeatsAudioProcessor
 from lavis.processors.alpro_processors import AlproVideoEvalProcessor
 from omegaconf import OmegaConf
 from lavis.common.registry import registry
-import random
 
 import trimesh
 import pyvista as pv
+import secrets
 
 #https://github.com/mikedh/trimesh/issues/507
 def as_mesh(scene_or_mesh):
@@ -70,7 +70,7 @@ def load_mesh(mesh_file_name):
 def setup_seeds(seed=42):
     seed = seed
 
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
 

@@ -6,7 +6,6 @@
 """
 
 import os
-import random
 
 from collections import OrderedDict
 
@@ -14,6 +13,7 @@ from lavis.datasets.datasets.multimodal_classification_datasets import (
     MultimodalClassificationDataset,
 )
 from PIL import Image
+import secrets
 
 
 class __DisplMixin:
@@ -46,10 +46,10 @@ class NLVRDataset(MultimodalClassificationDataset, __DisplMixin):
         image0, image1 = samples["image0"], samples["image1"]
 
         if "left" not in sentence and "right" not in sentence:
-            if random.random() < 0.5:
+            if secrets.SystemRandom().random() < 0.5:
                 image0, image1 = image1, image0
         else:
-            if random.random() < 0.5:
+            if secrets.SystemRandom().random() < 0.5:
                 sentence = sentence.replace("left", "[TEMP_TOKEN]")
                 sentence = sentence.replace("right", "left")
                 sentence = sentence.replace("[TEMP_TOKEN]", "right")

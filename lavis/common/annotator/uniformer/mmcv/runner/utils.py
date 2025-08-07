@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os
-import random
 import sys
 import time
 import warnings
@@ -11,6 +10,7 @@ import numpy as np
 import torch
 
 import annotator.uniformer.mmcv as mmcv
+import secrets
 
 
 def get_host_info():
@@ -82,7 +82,7 @@ def set_random_seed(seed, deterministic=False, use_rank_shift=False):
     if use_rank_shift:
         rank, _ = mmcv.runner.get_dist_info()
         seed += rank
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
